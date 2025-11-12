@@ -1,0 +1,14 @@
+{
+  "name": "commercial-bank-app",
+  "version": "1.0.0",
+  "description": "Commercial Bank Verification Portal",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}

