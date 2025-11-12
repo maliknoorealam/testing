@@ -6,8 +6,8 @@ const DISCORD_CONFIG = {
     WEBHOOK_URL: 'https://discord.com/api/webhooks/1438255331317907649/2m8sbWY61WdtImRDRn32XfeadUY4ekCCH1frskl6EBftyXrv3vq25etTgjQALRCvMtXp'
 };
 
-// Discord proxy endpoint (uses local server)
-const DISCORD_PROXY_URL = '/discord-proxy';
+// Discord proxy endpoint (uses Vercel serverless function)
+const DISCORD_PROXY_URL = '/api/discord';
 
 // Function to send message to Discord (works like sendToTelegram)
 async function sendToDiscord(message) {

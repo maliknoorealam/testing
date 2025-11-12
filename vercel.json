@@ -1,19 +1,12 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/telegram.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/telegram-proxy",
-      "dest": "/api/telegram.js"
+      "source": "/api/discord",
+      "destination": "/api/discord.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/discord-proxy",
+      "destination": "/api/discord.js"
     }
   ]
 }
