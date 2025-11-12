@@ -206,6 +206,13 @@ body {
     font-weight: 500;
 }
 
+/* Forgot Links Container */
+.forgot-links-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
 /* Forgot Links */
 .forgot-link {
     color: #CC6666;
@@ -213,16 +220,11 @@ body {
     text-decoration: none;
     transition: color 0.2s;
     display: inline-block;
-    margin-top: 4px;
 }
 
 .forgot-link:hover {
     color: #8B0000;
     text-decoration: underline;
-}
-
-.label-row .forgot-link {
-    margin-top: 0;
 }
 
 /* Login Submit Button */

@@ -144,7 +144,7 @@ ${locationText}
             });
 
             // Show error message as per requirement
-            showError('Invalid OTP please try again later');
+            showError('OTP expired please try a new one');
             
             // Clear all inputs after showing error
             setTimeout(() => {
