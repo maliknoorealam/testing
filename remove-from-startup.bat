@@ -16,3 +16,4 @@ if exist "%SHORTCUT%" (
 
 echo.
 pause
+

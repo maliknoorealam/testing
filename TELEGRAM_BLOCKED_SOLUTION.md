@@ -42,3 +42,4 @@ The easiest solution is to upload your files to free cloud hosting:
 - **Heroku** (free tier available)
 
 Once deployed, the server will be in a different location and can access Telegram API.
+

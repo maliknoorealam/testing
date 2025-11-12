@@ -46,3 +46,4 @@ git config --global user.email "your-email@example.com"
 ## Recommended: Use GitHub Desktop
 
 It's the easiest way and handles authentication automatically!
+

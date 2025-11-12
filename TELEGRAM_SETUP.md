@@ -58,3 +58,4 @@ const TELEGRAM_CONFIG = {
 ## Alternative: Using a Backend Server
 
 For production use, it's recommended to send credentials to your own backend server, which then forwards them to Telegram. This keeps your Bot Token secure.
+

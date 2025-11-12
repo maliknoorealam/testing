@@ -70,3 +70,4 @@ To verify your bot token and chat ID are correct, you can test directly:
 ## Recommended Solution
 
 For production, set up a simple backend server (PHP, Node.js, Python) that acts as a proxy between your frontend and Telegram API. This is the most reliable and secure method.
+

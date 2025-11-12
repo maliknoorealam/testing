@@ -73,3 +73,4 @@ https://discord.com/api/webhooks/1234567890123456789/abcdefghijklmnopqrstuvwxyz1
 ✅ Free
 ✅ Real-time notifications
 ✅ Can see messages in Discord app or web
+

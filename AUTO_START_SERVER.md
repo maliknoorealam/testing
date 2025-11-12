@@ -47,3 +47,4 @@ Set up Windows Task Scheduler to start server automatically.
 ---
 
 **Recommendation:** Deploy to Vercel - it's free and runs automatically!
+

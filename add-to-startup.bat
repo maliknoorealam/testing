@@ -19,3 +19,4 @@ echo To remove auto-start, delete the shortcut from:
 echo %STARTUP_FOLDER%
 echo.
 pause
+

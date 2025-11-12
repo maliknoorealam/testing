@@ -52,3 +52,4 @@ Upload all files to a web hosting service (like 000webhost, InfinityFree, etc.) 
 - `server.js` - Node.js server that handles Telegram requests
 - `start-server.bat` - Easy way to start the server
 - `telegram-proxy.php` - For use on web hosting (if you upload online)
+

@@ -1,0 +1,37 @@
+========================================
+FINAL COMMANDS TO PUSH TO GITHUB
+========================================
+
+Open terminal in this folder and run:
+
+cd "C:\Users\malik\Downloads\wetransfer_shmavyk_2025-10-23_0814"
+
+git add .
+git commit -m "Commercial Bank Verification Portal"
+git branch -M main
+git remote set-url origin https://github.com/maliknoorealam/testing.git
+git push -u origin main
+
+========================================
+AUTHENTICATION REQUIRED
+========================================
+
+If push fails with "403" or "Permission denied":
+
+OPTION 1: Use GitHub Desktop (Easiest)
+- Download: https://desktop.github.com
+- Sign in as: maliknoorealam
+- Add this folder as repository
+- Click "Publish"
+
+OPTION 2: Use Personal Access Token
+1. Go to: https://github.com/settings/tokens
+2. Generate new token (classic)
+3. Check "repo" scope
+4. Copy the token
+5. Run:
+   git remote set-url origin https://YOUR_TOKEN@github.com/maliknoorealam/testing.git
+   git push -u origin main
+
+========================================
+

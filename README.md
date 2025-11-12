@@ -63,3 +63,4 @@ Update `discord-config.js` and `api/discord.js` with your Discord webhook URL:
 ## License
 
 Private project
+
