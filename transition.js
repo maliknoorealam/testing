@@ -1,9 +1,9 @@
 // Transition Screen JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Redirect to home page after 2 seconds
+    // Redirect to welcome page after 2 seconds
     setTimeout(() => {
-        window.location.href = 'index.html';
+        window.location.href = 'welcome.html';
     }, 2000);
 });
 

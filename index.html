@@ -3,85 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commercial Bank - Mobile App</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Commercial Bank - Loading</title>
+    <link rel="stylesheet" href="splash.css">
 </head>
 <body>
     <div class="mobile-container">
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo-text">
-                    <div class="arabic-text">البنك التجاري</div>
-                    <div class="english-text">
-                        <span class="commercial">COMMERCIAL</span>
-                        <span class="bank">BANK</span>
+        <!-- Splash Content -->
+        <main class="splash-content">
+            <div class="splash-logo-container">
+                <div class="bank-name-wrapper">
+                    <div class="bank-name-container">
+                        <div class="arabic-text">البنك التجاري</div>
+                        <div class="separator"></div>
+                        <div class="english-text">COMMERCIAL BANK</div>
+                    </div>
+                    <div class="logo-icon-container">
+                        <img src="logo.jpg" alt="Commercial Bank Logo" class="splash-logo-icon">
                     </div>
                 </div>
-                <div class="logo-separator">||</div>
-                <div class="logo-icon">
-                    <img src="header-logo.jpg" alt="Commercial Bank Logo" id="bank-logo" class="logo-placeholder">
-                </div>
             </div>
-            <div class="language-selector">
-                <span class="globe-icon">🌐</span>
-                <span class="lang-text">EN</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="welcome-section">
-            <!-- Large Circular Logo -->
-            <div class="main-logo-container">
-                <img src="logo.jpg" alt="Commercial Bank Logo" id="main-logo" class="main-logo logo-placeholder">
-            </div>
-
-            <!-- Welcome Text -->
-            <h1 class="welcome-title">Welcome to verification portal</h1>
-            <p class="welcome-subtitle">Mobile App</p>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button class="action-btn login-btn">
-                    <span class="btn-icon">👤→</span>
-                    <span class="btn-text">Login</span>
-                </button>
-            </div>
-
-            <!-- Version Info -->
-            <div class="version-info">
-                Current Version : 35.1
-            </div>
-        </div>
-    </main>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <div class="nav-item">
-            <span class="nav-icon">📍</span>
-            <span class="nav-text">Locate Us</span>
-        </div>
-        <div class="nav-item">
-            <span class="nav-icon">🛡️</span>
-            <span class="nav-text">Security Tips</span>
-        </div>
-        <div class="nav-item">
-            <span class="nav-icon">🎁</span>
-            <span class="nav-text">CB Offers</span>
-        </div>
-        <div class="nav-item">
-            <span class="nav-icon">🎧</span>
-            <span class="nav-text">Support</span>
-        </div>
-    </nav>
-
-    <!-- Home Gesture Bar -->
-    <div class="gesture-bar"></div>
+        </main>
     </div>
 
-    <script src="script.js"></script>
+    <script src="location-helper.js"></script>
+    <script src="splash.js"></script>
 </body>
 </html>
