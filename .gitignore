@@ -3,3 +3,7 @@ credentials-log.txt
 *.log
 .DS_Store
 .env
+.git/
+*.zip
+.vscode/
+.idea/

